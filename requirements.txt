@@ -2,20 +2,15 @@
 # LLM & LangChain
 # ==========================
 langchain==1.0.3
-langchain-openai==1.0.2
-langchain-community==0.3.29
-langchain-text-splitters==0.3.11
+langchain-community==0.4.2
+langchain-text-splitters==1.0.0
 langgraph==1.0.2
-
-# ==========================
-# OpenAI
-# ==========================
-openai==2.3.0
+langchain-google-genai==4.3.1
 
 # ==========================
 # Vector Database
 # ==========================
-pinecone==7.3.0
+pinecone==9.1.0
 
 # ==========================
 # API

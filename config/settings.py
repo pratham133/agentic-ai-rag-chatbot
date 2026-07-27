@@ -10,7 +10,6 @@ from os import getenv
 
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 
@@ -18,7 +17,7 @@ load_dotenv()
 class Settings:
     """Application configuration."""
 
-    openai_api_key: str
+    google_api_key: str
     pinecone_api_key: str
 
     pinecone_index_name: str
@@ -30,7 +29,8 @@ class Settings:
 
 
 settings = Settings(
-    openai_api_key=getenv("OPENAI_API_KEY", ""),
+    google_api_key=getenv("GOOGLE_API_KEY", ""),
+
     pinecone_api_key=getenv("PINECONE_API_KEY", ""),
 
     pinecone_index_name=getenv(
@@ -39,13 +39,13 @@ settings = Settings(
     ),
 
     chat_model=getenv(
-        "OPENAI_CHAT_MODEL",
-        "gpt-4.1-mini",
+        "CHAT_MODEL",
+        "gemini-2.5-flash",
     ),
 
     embedding_model=getenv(
-        "OPENAI_EMBEDDING_MODEL",
-        "text-embedding-3-small",
+        "EMBEDDING_MODEL",
+        "gemini-embedding-2-preview",
     ),
 
     top_k=int(getenv("TOP_K", "4")),
