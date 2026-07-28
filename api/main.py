@@ -6,11 +6,7 @@ Exposes the RAG chatbot through a REST API.
 
 from fastapi import FastAPI, HTTPException
 
-from api.schemas import (
-    ChatRequest,
-    ChatResponse,
-)
-
+from api.schemas import ChatRequest, ChatResponse
 from rag.graph import graph
 
 
