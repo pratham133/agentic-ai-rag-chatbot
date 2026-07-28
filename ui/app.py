@@ -1,16 +1,16 @@
 """
 Streamlit Frontend
 
-Simple ChatGPT-style interface for the RAG chatbot.
+Professional UI for the Agentic AI RAG Chatbot.
 """
 
-import streamlit as st
 import requests
+import streamlit as st
 
 
-# -------------------------------------------------
+# ==================================================
 # Page Configuration
-# -------------------------------------------------
+# ==================================================
 
 st.set_page_config(
     page_title="Agentic AI RAG Chatbot",
@@ -18,49 +18,83 @@ st.set_page_config(
     layout="wide",
 )
 
+# ==================================================
+# Sidebar
+# ==================================================
 
-# -------------------------------------------------
-# Title
-# -------------------------------------------------
+with st.sidebar:
+
+    st.title("🤖 Agentic AI RAG")
+
+    st.markdown("---")
+
+    st.markdown("### 📌 About")
+
+    st.write(
+        """
+This chatbot answers questions using:
+
+- 📄 PDF Knowledge Base
+- 🧠 Gemini LLM
+- 🔍 Pinecone Vector Search
+- 🔗 LangGraph Workflow
+- ⚡ FastAPI Backend
+- 🎨 Streamlit Frontend
+"""
+    )
+
+    st.markdown("---")
+
+    st.info(
+        "Ask any question related to the uploaded Agentic AI document."
+    )
+
+# ==================================================
+# Main Page
+# ==================================================
 
 st.title("🤖 Agentic AI RAG Chatbot")
 
-st.write(
-    "Ask questions about Agentic AI using your uploaded knowledge base."
+st.caption(
+    "Powered by Gemini • Pinecone • LangGraph • FastAPI"
 )
 
+st.write("")
 
-# -------------------------------------------------
-# Backend API
-# -------------------------------------------------
+# ==================================================
+# Backend
+# ==================================================
 
 API_URL = "http://127.0.0.1:8000/chat"
 
-
-# -------------------------------------------------
-# User Input
-# -------------------------------------------------
+# ==================================================
+# User Question
+# ==================================================
 
 question = st.text_input(
-    "Ask your question:"
+    "Ask your question",
+    placeholder="Example: What is Agentic AI?"
 )
 
-
-# -------------------------------------------------
+# ==================================================
 # Ask Button
-# -------------------------------------------------
+# ==================================================
 
-if st.button("Ask"):
+if st.button(
+    "Ask",
+    use_container_width=True,
+):
 
-    if not question.strip():
+    if question.strip() == "":
 
         st.warning("Please enter a question.")
 
     else:
 
-        with st.spinner("Thinking..."):
+        with st.spinner("Searching knowledge base..."):
 
             try:
+
                 response = requests.post(
                     API_URL,
                     json={
@@ -68,49 +102,36 @@ if st.button("Ask"):
                     }
                 )
 
-                # -------------------------------------
-                # DEBUG INFORMATION
-                # -------------------------------------
-
-                st.subheader("Debug Information")
-
-                st.write("Status Code:")
-                st.write(response.status_code)
-
-                data = response.json()
-
-                st.write("API Response:")
-                st.json(data)
-
-                # -------------------------------------
-                # Only continue if successful
-                # -------------------------------------
-
                 if response.status_code != 200:
 
-                    st.error("Backend returned an error.")
+                    st.error("Backend Error")
+
+                    st.json(response.json())
 
                 else:
 
-                    st.subheader("Answer")
+                    data = response.json()
+
+                    st.success("Answer generated successfully!")
+
+                    st.markdown("## 💡 Answer")
 
                     st.write(data["answer"])
 
-                    st.subheader("Retrieved Sources")
+                    st.markdown("---")
 
-                    for doc in data["contexts"]:
+                    st.markdown("## 📚 Retrieved Sources")
 
-                        st.markdown(
-                            f"### 📄 Page {doc['page']}"
-                        )
+                    for index, doc in enumerate(
+                        data["contexts"],
+                        start=1,
+                    ):
 
-                        st.write(doc["text"])
+                        with st.expander(
+                            f"Document {index} | Page {doc['page']} | Score {doc['score']:.3f}"
+                        ):
 
-                        st.caption(
-                            f"Similarity Score: {doc['score']:.4f}"
-                        )
-
-                        st.divider()
+                            st.write(doc["text"])
 
             except Exception as e:
 
