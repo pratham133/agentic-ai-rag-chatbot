@@ -1,41 +1,42 @@
 """
 Retriever Module
 
-Searches Pinecone and returns the
-most relevant document chunks.
+Retrieves relevant chunks from Pinecone.
 """
 
-from config.settings import settings
 from vectorstore.pinecone_store import PineconeVectorStore
+
+from config.settings import settings
 
 
 class Retriever:
-    """Semantic Retriever."""
+    """Retrieves relevant documents."""
 
     def __init__(self):
+        """Initialize vector store."""
+
         self.vector_store = PineconeVectorStore()
 
     def retrieve(self, query: str):
         """
-        Retrieve relevant chunks
-        from Pinecone.
+        Retrieve top-k similar chunks.
         """
 
-        matches = self.vector_store.similarity_search(
+        results = self.vector_store.similarity_search(
             query=query,
             top_k=settings.top_k,
         )
 
-        retrieved_documents = []
+        documents = []
 
-        for match in matches:
+        for match in results:
 
-            retrieved_documents.append(
+            documents.append(
                 {
-                    "score": match.score,
                     "text": match.metadata["text"],
                     "page": match.metadata["page"],
+                    "score": match.score,
                 }
             )
 
-        return retrieved_documents
+        return documents

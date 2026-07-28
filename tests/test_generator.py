@@ -1,5 +1,5 @@
 from rag.generator import ResponseGenerator
-from rag.prompt import PromptBuilder
+from rag.prompt_builder import PromptBuilder
 from rag.retriever import Retriever
 
 
