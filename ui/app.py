@@ -1,16 +1,16 @@
 """
-Streamlit Frontend
+Professional Streamlit Frontend
 
-Professional UI for the Agentic AI RAG Chatbot.
+Agentic AI RAG Chatbot
 """
 
 import requests
 import streamlit as st
 
 
-# ==================================================
-# Page Configuration
-# ==================================================
+# =====================================================
+# PAGE CONFIGURATION
+# =====================================================
 
 st.set_page_config(
     page_title="Agentic AI RAG Chatbot",
@@ -18,9 +18,10 @@ st.set_page_config(
     layout="wide",
 )
 
-# ==================================================
-# Sidebar
-# ==================================================
+
+# =====================================================
+# SIDEBAR
+# =====================================================
 
 with st.sidebar:
 
@@ -28,30 +29,67 @@ with st.sidebar:
 
     st.markdown("---")
 
-    st.markdown("### 📌 About")
+    st.subheader("📌 About")
 
-    st.write(
+    st.info(
         """
-This chatbot answers questions using:
+This chatbot uses Retrieval-Augmented Generation (RAG)
+to answer questions from your uploaded PDF knowledge base.
 
-- 📄 PDF Knowledge Base
-- 🧠 Gemini LLM
-- 🔍 Pinecone Vector Search
-- 🔗 LangGraph Workflow
-- ⚡ FastAPI Backend
-- 🎨 Streamlit Frontend
+### Tech Stack
+
+- 🧠 Gemini
+- 🔍 Pinecone
+- 🔗 LangGraph
+- ⚡ FastAPI
+- 🎨 Streamlit
+
+---
+
+### Workflow
+
+PDF
+
+⬇
+
+Pinecone
+
+⬇
+
+Retriever
+
+⬇
+
+LangGraph
+
+⬇
+
+Gemini
+
+⬇
+
+Answer
 """
     )
 
     st.markdown("---")
 
-    st.info(
-        "Ask any question related to the uploaded Agentic AI document."
-    )
+    if st.button("🗑 Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
 
-# ==================================================
-# Main Page
-# ==================================================
+
+# =====================================================
+# CHAT HISTORY
+# =====================================================
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+
+# =====================================================
+# TITLE
+# =====================================================
 
 st.title("🤖 Agentic AI RAG Chatbot")
 
@@ -59,37 +97,52 @@ st.caption(
     "Powered by Gemini • Pinecone • LangGraph • FastAPI"
 )
 
-st.write("")
-
-# ==================================================
-# Backend
-# ==================================================
 
 API_URL = "http://127.0.0.1:8000/chat"
 
-# ==================================================
-# User Question
-# ==================================================
 
-question = st.text_input(
-    "Ask your question",
-    placeholder="Example: What is Agentic AI?"
+# =====================================================
+# DISPLAY OLD CHAT
+# =====================================================
+
+for message in st.session_state.messages:
+
+    with st.chat_message(message["role"]):
+
+        st.markdown(message["content"])
+
+
+# =====================================================
+# CHAT INPUT
+# =====================================================
+
+question = st.chat_input(
+    "Ask anything about Agentic AI..."
 )
 
-# ==================================================
-# Ask Button
-# ==================================================
 
-if st.button(
-    "Ask",
-    use_container_width=True,
-):
+# =====================================================
+# SEND QUESTION
+# =====================================================
 
-    if question.strip() == "":
+if question:
 
-        st.warning("Please enter a question.")
+    # Show user message
 
-    else:
+    st.session_state.messages.append(
+        {
+            "role": "user",
+            "content": question,
+        }
+    )
+
+    with st.chat_message("user"):
+
+        st.markdown(question)
+
+    # Assistant response
+
+    with st.chat_message("assistant"):
 
         with st.spinner("Searching knowledge base..."):
 
@@ -99,36 +152,39 @@ if st.button(
                     API_URL,
                     json={
                         "question": question
-                    }
+                    },
+                    timeout=60,
                 )
 
                 if response.status_code != 200:
 
                     st.error("Backend Error")
 
-                    st.json(response.json())
+                    st.code(response.text)
 
                 else:
 
                     data = response.json()
 
-                    st.success("Answer generated successfully!")
+                    answer = data["answer"]
 
-                    st.markdown("## 💡 Answer")
+                    st.markdown(answer)
 
-                    st.write(data["answer"])
+                    st.session_state.messages.append(
+                        {
+                            "role": "assistant",
+                            "content": answer,
+                        }
+                    )
 
-                    st.markdown("---")
+                    st.divider()
 
-                    st.markdown("## 📚 Retrieved Sources")
+                    st.subheader("📚 Retrieved Sources")
 
-                    for index, doc in enumerate(
-                        data["contexts"],
-                        start=1,
-                    ):
+                    for doc in data["contexts"]:
 
                         with st.expander(
-                            f"Document {index} | Page {doc['page']} | Score {doc['score']:.3f}"
+                            f"📄 Page {doc['page']} | Score {doc['score']:.3f}"
                         ):
 
                             st.write(doc["text"])
@@ -136,3 +192,14 @@ if st.button(
             except Exception as e:
 
                 st.error(str(e))
+
+
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.markdown("---")
+
+st.caption(
+    "Built with ❤️ using Streamlit, FastAPI, LangGraph, Gemini and Pinecone."
+)
