@@ -1,12 +1,20 @@
 # 🤖 Agentic AI RAG Chatbot
 
-A production-style Retrieval-Augmented Generation (RAG) chatbot built using **LangGraph**, **Pinecone**, **Google Gemini**, **FastAPI**, and **Streamlit**.
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
+![LangGraph](https://img.shields.io/badge/LangGraph-RAG-orange)
+![Pinecone](https://img.shields.io/badge/Pinecone-VectorDB-purple)
+![Google Gemini](https://img.shields.io/badge/Google-Gemini-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-The chatbot answers questions **strictly from the provided Agentic AI eBook** by retrieving relevant knowledge from a vector database before generating responses with Gemini.
+A production-style **Retrieval-Augmented Generation (RAG)** chatbot built using **LangGraph**, **Google Gemini**, **Pinecone**, **FastAPI**, and **Streamlit**.
+
+The chatbot answers questions **strictly from the provided Agentic AI eBook** by retrieving semantically relevant document chunks from Pinecone before generating grounded responses with Gemini Flash.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
 - 📄 PDF Knowledge Base
 - ✂️ Intelligent Text Chunking
@@ -15,14 +23,26 @@ The chatbot answers questions **strictly from the provided Agentic AI eBook** by
 - 🔗 LangGraph Workflow
 - 🤖 Gemini Flash LLM
 - ⚡ FastAPI REST API
-- 🎨 Modern Streamlit Chat UI
+- 🎨 Modern Streamlit Chat Interface
 - 📚 Retrieved Context Sources
 - 📈 Similarity Confidence Scores
-- 💬 Multi-turn Chat Interface
+- 💬 Multi-turn Conversation Support
 
 ---
 
-## 🏗 Project Architecture
+# 🌐 Live Demo
+
+**Frontend**
+
+> Coming Soon
+
+**Backend API**
+
+> Coming Soon
+
+---
+
+# 🏗 Project Architecture
 
 ```text
                    PDF
@@ -66,19 +86,20 @@ The chatbot answers questions **strictly from the provided Agentic AI eBook** by
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
 | Technology | Purpose |
 |------------|---------|
 | Python | Programming Language |
-| LangGraph | RAG Workflow |
-| Google Gemini | LLM |
+| LangGraph | RAG Workflow Orchestration |
+| LangChain | LLM Integration |
+| Google Gemini | Large Language Model |
 | Gemini Embeddings | Text Embeddings |
 | Pinecone | Vector Database |
-| FastAPI | Backend API |
-| Streamlit | Frontend UI |
-| LangChain | LLM Integration |
-| PyPDF | PDF Processing |
+| FastAPI | REST API Backend |
+| Streamlit | Chat Interface |
+| PyMuPDF | PDF Processing |
+
 ---
 
 # 📂 Project Structure
@@ -117,7 +138,7 @@ cd agentic-ai-rag-chatbot
 
 ---
 
-## 2. Create a virtual environment
+## 2. Create a Virtual Environment
 
 ### Windows
 
@@ -137,7 +158,7 @@ source .venv/bin/activate
 
 ---
 
-## 3. Install dependencies
+## 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -150,16 +171,22 @@ pip install -r requirements.txt
 Create a `.env` file in the project root.
 
 ```env
+# Google Gemini API Key
 GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY
 
+# Pinecone API Key
 PINECONE_API_KEY=YOUR_PINECONE_API_KEY
 
+# Pinecone Index
 PINECONE_INDEX_NAME=agentic-ai-rag
 
+# Gemini Chat Model
 CHAT_MODEL=gemini-flash-latest
 
+# Gemini Embedding Model
 EMBEDDING_MODEL=gemini-embedding-2-preview
 
+# Number of retrieved chunks
 TOP_K=4
 ```
 
@@ -173,12 +200,12 @@ TOP_K=4
 python ingest/main.py
 ```
 
-This will:
+This process:
 
-- Read the PDF
-- Chunk the document
-- Generate Gemini embeddings
-- Store vectors in Pinecone
+- Reads the PDF
+- Splits it into chunks
+- Generates Gemini embeddings
+- Stores vectors inside Pinecone
 
 ---
 
@@ -188,13 +215,13 @@ This will:
 uvicorn api.main:app --reload
 ```
 
-FastAPI will run on
+FastAPI runs at:
 
 ```
 http://127.0.0.1:8000
 ```
 
-Swagger Documentation
+Swagger Documentation:
 
 ```
 http://127.0.0.1:8000/docs
@@ -208,7 +235,7 @@ http://127.0.0.1:8000/docs
 streamlit run ui/app.py
 ```
 
-The application opens at
+Open:
 
 ```
 http://localhost:8501
@@ -218,13 +245,13 @@ http://localhost:8501
 
 # 📡 API Endpoint
 
-## POST /chat
+## POST `/chat`
 
 Request
 
 ```json
 {
-    "question": "What is Agentic AI?"
+  "question": "What is Agentic AI?"
 }
 ```
 
@@ -232,25 +259,25 @@ Example Response
 
 ```json
 {
-    "question": "What is Agentic AI?",
-    "answer": "...",
-    "contexts": [
-        {
-            "page": 17,
-            "score": 0.817,
-            "text": "..."
-        }
-    ]
+  "question": "What is Agentic AI?",
+  "answer": "...",
+  "contexts": [
+    {
+      "page": 17,
+      "score": 0.817,
+      "text": "..."
+    }
+  ]
 }
 ```
 
-The API returns:
+Every response contains:
 
 - Generated answer
 - Retrieved context chunks
 - Similarity scores
 
-This satisfies the interview requirement of returning both the answer and supporting evidence.
+This satisfies the assignment requirement of returning supporting evidence alongside the generated answer.
 
 ---
 
@@ -258,15 +285,11 @@ This satisfies the interview requirement of returning both the answer and suppor
 
 ## 🏠 Home Page
 
-A clean and modern Streamlit interface with project information and chat capabilities.
-
 ![Home Page](screenshots/home-page.png)
 
 ---
 
 ## 💬 Chat Example
-
-The chatbot answers questions using Retrieval-Augmented Generation (RAG), grounding every response in the uploaded Agentic AI eBook.
 
 ![Chat Example](screenshots/chat-example.png)
 
@@ -274,31 +297,23 @@ The chatbot answers questions using Retrieval-Augmented Generation (RAG), ground
 
 ## 💭 Multi-turn Conversation (Part 1)
 
-Example of a conversation showing multiple grounded responses from the knowledge base.
-
-![Conversation Part 1](screenshots/conversation-1.png)
+![Conversation 1](screenshots/conversation-1.png)
 
 ---
 
 ## 💭 Multi-turn Conversation (Part 2)
 
-Continuation of the conversation with additional questions and retrieved sources.
-
-![Conversation Part 2](screenshots/conversation-2.png)
+![Conversation 2](screenshots/conversation-2.png)
 
 ---
 
 ## ⚡ FastAPI Documentation
-
-Interactive Swagger UI generated automatically by FastAPI.
 
 ![FastAPI Docs](screenshots/fastapi-docs.png)
 
 ---
 
 # 💬 Sample Queries
-
-The following are example questions that can be asked to the chatbot.
 
 - What is Agentic AI?
 - Explain Agentic AI in simple language.
@@ -309,20 +324,34 @@ The following are example questions that can be asked to the chatbot.
 
 ---
 
-# 🏗️ Architecture Explanation
+# 🏗 Architecture Explanation
 
-The chatbot follows a Retrieval-Augmented Generation (RAG) architecture.
+The chatbot follows a Retrieval-Augmented Generation (RAG) workflow.
 
-1. The Agentic AI eBook is ingested and split into smaller text chunks.
-2. Gemini Embeddings convert each chunk into vector representations.
-3. The vectors are stored in Pinecone for semantic search.
-4. When a user asks a question, the query is embedded using the same embedding model.
-5. Pinecone retrieves the most relevant document chunks based on vector similarity.
-6. LangGraph orchestrates the retrieval and generation workflow.
-7. Gemini Flash receives the retrieved context and generates an answer grounded only in the retrieved content.
-8. FastAPI exposes the chatbot as a REST API, while Streamlit provides an interactive user interface.
+1. The Agentic AI eBook is ingested and divided into semantic chunks.
+2. Gemini Embeddings convert every chunk into vector representations.
+3. Pinecone stores the vectors for semantic similarity search.
+4. User questions are embedded using the same embedding model.
+5. Pinecone retrieves the most relevant document chunks.
+6. LangGraph orchestrates retrieval, prompt construction, and response generation.
+7. Gemini Flash generates answers grounded only in the retrieved context.
+8. FastAPI exposes the REST API while Streamlit provides the interactive chat interface.
 
-This workflow ensures that responses remain grounded in the uploaded knowledge base rather than relying solely on the LLM's general knowledge.
+This architecture significantly reduces hallucinations by grounding every response in the uploaded knowledge base.
+
+---
+
+# 🔗 Why LangGraph?
+
+LangGraph is used to orchestrate the Retrieval-Augmented Generation workflow as a graph of modular nodes.
+
+In this project it manages:
+
+- Document Retrieval
+- Prompt Construction
+- Answer Generation
+
+This modular architecture improves maintainability, readability, and makes it easy to extend the workflow with additional processing steps in the future.
 
 ---
 
@@ -333,30 +362,30 @@ This project satisfies all requirements of the AI Engineer Internship assignment
 - ✅ PDF ingestion and chunking
 - ✅ Gemini text embeddings
 - ✅ Pinecone vector database
-- ✅ LangGraph RAG workflow
+- ✅ LangGraph workflow
 - ✅ Grounded answer generation
 - ✅ FastAPI REST API
-- ✅ Streamlit chat interface
-- ✅ Retrieved context returned with every response
-- ✅ Similarity (confidence) scores displayed
-- ✅ Sample queries included
-- ✅ Architecture explanation provided
+- ✅ Streamlit Chat UI
+- ✅ Retrieved context chunks
+- ✅ Similarity confidence scores
+- ✅ Sample queries
+- ✅ Architecture explanation
 
 ---
 
 # 🔮 Future Improvements
 
-Potential enhancements include:
+Potential future enhancements include:
 
 - Conversation memory
-- Multi-PDF support
-- Source highlighting within responses
-- Streaming token-by-token responses
+- Multi-document support
+- Source highlighting
+- Streaming responses
 - User authentication
-- Docker deployment
-- Cloud deployment (AWS, Azure, or GCP)
-- Advanced evaluation metrics
-- Hybrid keyword + semantic search
+- Docker containerization
+- Cloud deployment
+- Hybrid semantic + keyword retrieval
+- Evaluation metrics for RAG quality
 
 ---
 
@@ -364,7 +393,7 @@ Potential enhancements include:
 
 **Pratham Pasi**
 
-AI Engineer | Python Developer | Building AI, Data Analytics, and Intelligent Applications
+AI Engineer Aspirant • Python Developer • Building AI, Data Analytics, and Intelligent Applications
 
 GitHub: https://github.com/pratham133
 
@@ -372,9 +401,9 @@ GitHub: https://github.com/pratham133
 
 # ⭐ Acknowledgements
 
-This project was developed as part of the **AI Engineer Intern Technical Assignment**.
+This project was developed as part of the **AI Engineer Intern Technical Assessment** for **Appening Infotech**.
 
-Technologies used:
+It demonstrates a production-style Retrieval-Augmented Generation (RAG) pipeline built using:
 
 - Google Gemini
 - LangGraph
@@ -385,5 +414,4 @@ Technologies used:
 
 ---
 
-If you found this project helpful, consider giving it a ⭐ on GitHub.
-
+If you found this project useful, consider giving it a ⭐ on GitHub.
