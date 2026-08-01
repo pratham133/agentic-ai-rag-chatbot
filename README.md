@@ -1,5 +1,7 @@
 # 🤖 Agentic AI RAG Chatbot
 
+A production-ready Retrieval-Augmented Generation (RAG) chatbot that combines semantic search, vector databases, and Large Language Models to deliver grounded answers from a custom knowledge base.
+
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
@@ -7,8 +9,6 @@
 ![Pinecone](https://img.shields.io/badge/Pinecone-VectorDB-purple)
 ![Google Gemini](https://img.shields.io/badge/Google-Gemini-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-
-A production-style **Retrieval-Augmented Generation (RAG)** chatbot built using **LangGraph**, **Google Gemini**, **Pinecone**, **FastAPI**, and **Streamlit**.
 
 The chatbot answers questions **strictly from the provided Agentic AI eBook** by retrieving semantically relevant document chunks from Pinecone before generating grounded responses with Gemini Flash.
 
@@ -30,15 +30,29 @@ The chatbot answers questions **strictly from the provided Agentic AI eBook** by
 
 ---
 
-# 🌐 Live Demo
+# 🌟 Project Highlights
 
-**Frontend**
+- ✅ End-to-end RAG Pipeline
+- ✅ Google Gemini + Pinecone Integration
+- ✅ LangGraph Workflow Orchestration
+- ✅ FastAPI REST API
+- ✅ Interactive Streamlit Interface
+- ✅ Cloud Deployed (Render + Streamlit Community Cloud)
+- ✅ MIT Licensed
 
-> Coming Soon
+---
 
-**Backend API**
+### 🌐 Streamlit Application
 
-> Coming Soon
+👉 https://agentic-ai-rag-chatbot133.streamlit.app
+
+### ⚡ FastAPI API
+
+👉 https://agentic-ai-rag-chatbot-vz1l.onrender.com
+
+### 📚 Swagger Documentation
+
+👉 https://agentic-ai-rag-chatbot-vz1l.onrender.com/docs
 
 ---
 
@@ -131,7 +145,7 @@ agentic-ai-rag-chatbot/
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/agentic-ai-rag-chatbot.git
+git clone https://github.com/pratham133/agentic-ai-rag-chatbot.git
 
 cd agentic-ai-rag-chatbot
 ```
@@ -383,9 +397,16 @@ Potential future enhancements include:
 - Streaming responses
 - User authentication
 - Docker containerization
-- Cloud deployment
+- Multi-user support
 - Hybrid semantic + keyword retrieval
 - Evaluation metrics for RAG quality
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+See the LICENSE file for more information.
 
 ---
 
@@ -393,7 +414,9 @@ Potential future enhancements include:
 
 **Pratham Pasi**
 
-AI Engineer Aspirant • Python Developer • Building AI, Data Analytics, and Intelligent Applications
+AI & Python Developer
+
+Building Intelligent Applications using LLMs, Retrieval-Augmented Generation (RAG), and Data Analytics.
 
 GitHub: https://github.com/pratham133
 
