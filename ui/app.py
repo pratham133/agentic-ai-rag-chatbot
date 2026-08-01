@@ -11,7 +11,10 @@ import streamlit as st
 # Configuration
 # =====================================================
 
-API_URL = "http://127.0.0.1:8000/chat"
+API_URL = st.secrets.get(
+    "API_URL",
+    "https://agentic-ai-rag-chatbot-vz1l.onrender.com/chat",
+)
 
 st.set_page_config(
     page_title="Agentic AI RAG",
@@ -132,9 +135,7 @@ Responses are generated only after retrieving relevant context from Pinecone.
     st.divider()
 
     if st.button("🗑 Clear Chat"):
-
         st.session_state.messages.clear()
-
         st.rerun()
 
     st.divider()
@@ -165,7 +166,7 @@ Ask natural language questions and receive grounded answers generated using:
 st.divider()
 
 # =====================================================
-# Previous Chat History
+# Display Previous Messages
 # =====================================================
 
 for message in st.session_state.messages:
@@ -208,7 +209,6 @@ if question:
     )
 
     with st.chat_message("user"):
-
         st.markdown(question)
 
     with st.chat_message("assistant"):
@@ -221,18 +221,22 @@ if question:
 
                 response = requests.post(
                     API_URL,
-                    json={
-                        "question": question
-                    }
+                    json={"question": question},
+                    timeout=60,
                 )
-
-                data = response.json()
 
                 if response.status_code != 200:
 
-                    st.error(data.get("detail", "Unknown Error"))
+                    try:
+                        error = response.json().get("detail", "Unknown Error")
+                    except Exception:
+                        error = response.text
+
+                    st.error(error)
 
                 else:
+
+                    data = response.json()
 
                     st.markdown(data["answer"])
 
@@ -260,9 +264,11 @@ Similarity Score: **{doc['score']:.3f}**
                         }
                     )
 
-            except Exception as e:
+            except requests.exceptions.RequestException as e:
 
-                st.error(f"❌ {e}")
+                st.error(
+                    f"❌ Unable to connect to the backend.\n\n{e}"
+                )
 
 # =====================================================
 # Footer
